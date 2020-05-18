@@ -12,6 +12,7 @@ limitations under the License.
 */
 
 import React, { Component } from 'react';
+import { sortByTimestamp } from '@tektoncd/dashboard-utils';
 import Task from '../Task';
 
 import './TaskTree.scss';
@@ -47,7 +48,7 @@ class TaskTree extends Component {
               expanded={expanded}
               onSelect={this.handleSelect}
               reason={reason}
-              steps={steps}
+              steps={sortByTimestamp(steps)}
               succeeded={succeeded}
               pipelineTaskName={pipelineTaskName}
             />
