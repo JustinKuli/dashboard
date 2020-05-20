@@ -183,27 +183,23 @@ export function formatLabels(labelsRaw) {
 }
 
 // Sorts the steps by finishedAt and startedAt timestamps
-export function sortByTimestamp(steps) {
+export function sortStepsByTimestamp(steps) {
   return steps.sort((i, j) => {
-    const iFinishedAt = Date.parse(i.stepStatus?.terminated?.finishedAt);
-    const jFinishedAt = Date.parse(j.stepStatus?.terminated?.finishedAt);
-    const iStartedAt = Date.parse(i.stepStatus?.terminated?.startedAt);
-    const jStartedAt = Date.parse(j.stepStatus?.terminated?.startedAt);
+    const iFinishAt = new Date(i.stepStatus?.terminated?.finishedAt).getTime();
+    const jFinishAt = new Date(j.stepStatus?.terminated?.finishedAt).getTime();
+    const iStartedAt = new Date(i.stepStatus?.terminated?.startedAt).getTime();
+    const jStartedAt = new Date(j.stepStatus?.terminated?.startedAt).getTime();
 
-    if (!iFinishedAt || !jFinishedAt) {
+    if (!iFinishAt || !jFinishAt) {
       return 0;
     }
-    if (iFinishedAt !== jFinishedAt) {
-      return iFinishedAt - jFinishedAt;
+    if (iFinishAt !== jFinishAt) {
+      return iFinishAt - jFinishAt;
     }
-    // if finishedAt timestamps are equal, compare the startedAt timestamps
     if (!iStartedAt || !jStartedAt) {
       return 0;
     }
-    if (iStartedAt !== jStartedAt) {
-      return iStartedAt - jStartedAt;
-    }
-    return 0;
+    return iStartedAt - jStartedAt;
   });
 }
 
@@ -213,7 +209,7 @@ export function updateUnexecutedSteps(steps) {
     return steps;
   }
   let errorIndex = steps.length - 1;
-  return sortByTimestamp(steps).map((step, index) => {
+  return sortStepsByTimestamp(steps).map((step, index) => {
     // Update errorIndex
     if (step.reason !== 'Completed') {
       errorIndex = Math.min(index, errorIndex);

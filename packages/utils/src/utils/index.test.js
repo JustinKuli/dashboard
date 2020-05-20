@@ -26,7 +26,7 @@ import {
   reorderSteps,
   selectedTask,
   selectedTaskRun,
-  sortByTimestamp,
+  sortStepsByTimestamp,
   stepsStatus,
   taskRunStep,
   updateUnexecutedSteps
@@ -376,14 +376,14 @@ it('formatLabels', () => {
   ]);
 });
 
-it('sortByTimestamp preserves order if no timestamps present', () => {
+it('sortStepsByTimestamp preserves order if no timestamps present', () => {
   const steps = ['t', 'e', 's', 't'];
   const want = ['t', 'e', 's', 't'];
-  const got = sortByTimestamp(steps);
+  const got = sortStepsByTimestamp(steps);
   expect(got).toEqual(want);
 });
 
-it('sortByTimestamp sorts by finishedAt', () => {
+it('sortStepsByTimestamp sorts by finishedAt', () => {
   const step1 = {
     id: 'step1',
     stepStatus: {
@@ -410,11 +410,11 @@ it('sortByTimestamp sorts by finishedAt', () => {
   };
   const steps = [step1, step2, step3];
   const want = [step2, step1, step3];
-  const got = sortByTimestamp(steps);
+  const got = sortStepsByTimestamp(steps);
   expect(got).toEqual(want);
 });
 
-it('sortByTimestamp sorts by startedAt in a tie', () => {
+it('sortStepsByTimestamp sorts by startedAt in a tie', () => {
   const step1 = {
     id: 'step1',
     stepStatus: {
@@ -444,11 +444,11 @@ it('sortByTimestamp sorts by startedAt in a tie', () => {
   };
   const steps = [step1, step2, step3];
   const want = [step2, step1, step3];
-  const got = sortByTimestamp(steps);
+  const got = sortStepsByTimestamp(steps);
   expect(got).toEqual(want);
 });
 
-it('sortByTimestamp preserves order if invalid startedAt timestamp present', () => {
+it('sortStepsByTimestamp preserves order if invalid startedAt timestamp present', () => {
   const step1 = {
     id: 'step1',
     stepStatus: {
@@ -469,11 +469,11 @@ it('sortByTimestamp preserves order if invalid startedAt timestamp present', () 
   };
   const steps = [step1, step2];
   const want = [step1, step2];
-  const got = sortByTimestamp(steps);
+  const got = sortStepsByTimestamp(steps);
   expect(got).toEqual(want);
 });
 
-it('sortByTimestamp preserves order if startedAt timestamps equal', () => {
+it('sortStepsByTimestamp preserves order if startedAt timestamps equal', () => {
   const step1 = {
     id: 'step-b',
     stepStatus: {
@@ -494,7 +494,7 @@ it('sortByTimestamp preserves order if startedAt timestamps equal', () => {
   };
   const steps = [step1, step2];
   const want = [step1, step2];
-  const got = sortByTimestamp(steps);
+  const got = sortStepsByTimestamp(steps);
   expect(got).toEqual(want);
 });
 
